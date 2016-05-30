@@ -10,12 +10,25 @@ import android.widget.TextView;
 import com.example.dangxueyi.neteasenewstabs.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by dangxueyi on 16/5/30.
  */
-public class ChoosedAdapter extends RecyclerView.Adapter<ChoosedAdapter.ChoosedViewHolder> {
+public class ChoosedAdapter extends RecyclerView.Adapter<ChoosedAdapter.ChoosedViewHolder> implements onMoveAndSwipedListener {
 
+    private  OnClickMoveItemListener mOnClickMoveItemListener;
+
+
+
+    public  interface OnClickMoveItemListener{
+
+        void  moveItemListener(View view ,int position);
+    }
+
+    public  void setonClickMoveItemListener(OnClickMoveItemListener OnClickMoveItemListener){
+       this.mOnClickMoveItemListener=OnClickMoveItemListener;
+    }
 
     private Context context;
 
@@ -37,9 +50,16 @@ public class ChoosedAdapter extends RecyclerView.Adapter<ChoosedAdapter.ChoosedV
     }
 
     @Override
-    public void onBindViewHolder(ChoosedViewHolder holder, int position) {
+    public void onBindViewHolder(final ChoosedViewHolder holder, int position) {
 
         holder.textView.setText(arrayList.get(position));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = holder.getLayoutPosition();
+                mOnClickMoveItemListener.moveItemListener(v,position);
+            }
+        });
 
     }
 
@@ -59,5 +79,20 @@ public class ChoosedAdapter extends RecyclerView.Adapter<ChoosedAdapter.ChoosedV
         }
 
 
+    }
+    @Override
+    public boolean OnItemMove(int fromPosition, int toPosition) {
+
+        Collections.swap(arrayList,fromPosition,toPosition);
+
+        notifyItemMoved(fromPosition,toPosition);
+        return true;
+    }
+
+    @Override
+    public void OnItemDismiss(int position) {
+
+        arrayList.remove(position);
+        notifyItemRemoved(position);
     }
 }

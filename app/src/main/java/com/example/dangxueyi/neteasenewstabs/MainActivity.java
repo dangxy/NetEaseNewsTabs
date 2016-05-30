@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.View;
 
 import com.example.dangxueyi.neteasenewstabs.adapter.ChoosedAdapter;
 import com.example.dangxueyi.neteasenewstabs.adapter.UnChoosedAdapter;
@@ -19,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> choosedList;
     private ArrayList<String> unChoosedList;
     private Context mcontext;
+    private   ChoosedAdapter choosedAdapter;
+    private   ItemTouchHelper mItemTouchHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +32,24 @@ public class MainActivity extends AppCompatActivity {
         initData();
         mcontext=this;
 
-        choosedRecycler.setAdapter(new ChoosedAdapter(mcontext,choosedList));
+
+        choosedAdapter = new ChoosedAdapter(mcontext,choosedList);
+        choosedRecycler.setAdapter(choosedAdapter);
         choosedRecycler.setLayoutManager(new GridLayoutManager(mcontext,4));
+
+
+        choosedAdapter.setonClickMoveItemListener(new ChoosedAdapter.OnClickMoveItemListener() {
+            @Override
+            public void moveItemListener(View view, int position) {
+
+
+            }
+        });
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(choosedAdapter);
+
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(choosedRecycler);
         unChoosedRecycler.setAdapter(new UnChoosedAdapter(mcontext,unChoosedList));
         unChoosedRecycler.setLayoutManager(new GridLayoutManager(mcontext,4));
 
