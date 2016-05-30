@@ -17,18 +17,6 @@ import java.util.Collections;
  */
 public class ChoosedAdapter extends RecyclerView.Adapter<ChoosedAdapter.ChoosedViewHolder> implements onMoveAndSwipedListener {
 
-    private  OnClickMoveItemListener mOnClickMoveItemListener;
-
-
-
-    public  interface OnClickMoveItemListener{
-
-        void  moveItemListener(View view ,int position);
-    }
-
-    public  void setonClickMoveItemListener(OnClickMoveItemListener OnClickMoveItemListener){
-       this.mOnClickMoveItemListener=OnClickMoveItemListener;
-    }
 
     private Context context;
 
@@ -53,13 +41,7 @@ public class ChoosedAdapter extends RecyclerView.Adapter<ChoosedAdapter.ChoosedV
     public void onBindViewHolder(final ChoosedViewHolder holder, int position) {
 
         holder.textView.setText(arrayList.get(position));
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int position = holder.getLayoutPosition();
-                mOnClickMoveItemListener.moveItemListener(v,position);
-            }
-        });
+
 
     }
 

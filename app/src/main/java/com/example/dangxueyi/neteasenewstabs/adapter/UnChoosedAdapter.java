@@ -22,6 +22,19 @@ public class UnChoosedAdapter extends RecyclerView.Adapter<UnChoosedAdapter.Choo
     private ArrayList<String> arrayList;
 
     private LayoutInflater layoutInflater;
+    private  OnClickMoveItemListener mOnClickMoveItemListener;
+
+
+
+    public  interface OnClickMoveItemListener{
+
+        void  moveItemListener(final View view , final int position);
+    }
+
+    public  void setonClickMoveItemListener(OnClickMoveItemListener OnClickMoveItemListener){
+        this.mOnClickMoveItemListener=OnClickMoveItemListener;
+    }
+
 
     public UnChoosedAdapter(Context context, ArrayList<String> arrayList) {
         this.context = context;
@@ -37,9 +50,16 @@ public class UnChoosedAdapter extends RecyclerView.Adapter<UnChoosedAdapter.Choo
     }
 
     @Override
-    public void onBindViewHolder(ChoosedViewHolder holder, int position) {
+    public void onBindViewHolder(final ChoosedViewHolder holder, final int position) {
 
         holder.textView.setText(arrayList.get(position));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = holder.getLayoutPosition();
+                mOnClickMoveItemListener.moveItemListener(v,position);
+            }
+        });
 
     }
 
